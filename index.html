@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tower of Hanoi: Samurai Recursion Dojo</title>
+    <!-- Google Fonts for Retro Pixel & Modern Arcade Aesthetics -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Silkscreen:wght@400;700&family=Outfit:wght@400;600;800&family=Noto+Sans+JP:wght@400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="theme-edo">
+    <!-- Animated Falling Sakura Petals Canvas -->
+    <canvas id="sakuraCanvas"></canvas>
+
+    <!-- Katana Slash Screen Transition Overlay -->
+    <div id="katanaSlashOverlay" class="katana-slash-overlay">
+        <div class="slash-blade-1"></div>
+        <div class="slash-blade-2"></div>
+        <div class="slash-flash"></div>
+    </div>
+
+    <!-- Hidden YouTube Player Container (Global across views) -->
+    <div id="ytPlayerContainer" style="position: absolute; width: 1px; height: 1px; opacity: 0; pointer-events: none; overflow: hidden; top: -9999px; left: -9999px;">
+        <div id="ytPlayer"></div>
+    </div>
+
+    <!-- ============================================================== -->
+    <!-- HERO PAGE: TOWER OF HANOI EXPLAINER & SAMURAI SENSEI CHRONICLES -->
+    <!-- ============================================================== -->
+    <div class="hero-page-wrapper crt-effect" id="heroPageWrapper">
+        
+        <!-- Hero Header & Global Controls -->
+        <header class="hero-header">
+            <div class="hero-brand">
+                <div class="hero-brand-top">
+                    <span class="jp-title">ハノイの塔 &bull; 武士道</span>
+                    <button id="btnHeroCBackend" class="c-backend-pill" title="Click to view Native C Backend status & architecture">
+                        <span class="status-pulse-dot" id="heroCBackendDot"></span>
+                        <span id="heroCBackendText">NATIVE C: CHECKING...</span>
+                    </button>
+                </div>
+                <h1 class="hero-main-title"><span class="highlight">SAMURAI</span> HANOI DOJO</h1>
+                <p class="hero-tagline">The Ancient Brahma Legend, Sacred Laws of Combat & The Art of Recursion</p>
+            </div>
+
+            <!-- Top Nav & Arcade Controls -->
+            <div class="hero-header-actions">
+                <nav class="hero-nav-bar">
+                    <a href="#heroLegend" class="hero-nav-item">⛩️ THE LEGEND</a>
+                    <a href="#heroLaws" class="hero-nav-item">⚖️ 3 SACRED LAWS</a>
+                    <a href="#heroStrategy" class="hero-nav-item">⚡ RECURSION (2<sup>N</sup> &minus; 1)</a>
+                    <a href="#heroMiniDemo" class="hero-nav-item">🎯 LIVE MINI-DOJO</a>
+                </nav>
+                <div class="hero-controls-row">
+                    <button id="btnHeroMusic" class="arcade-btn icon-btn" title="Toggle Background Music">
+                        <span class="icon" id="heroMusicIcon">🎵</span>
+                        <span id="heroMusicText" class="btn-label">BGM: OFF</span>
+                    </button>
+                    <button id="btnHeroSound" class="arcade-btn icon-btn" title="Toggle SFX">
+                        <span class="icon" id="heroSoundIcon">🔊</span>
+                    </button>
+                    <button id="btnHeroCRT" class="arcade-btn icon-btn" title="Toggle CRT Filter">
+                        <span class="icon">📺</span>
+                    </button>
+                    <button id="btnHeroTheme" class="arcade-btn icon-btn" title="Switch Theme">
+                        <span class="icon">🎨</span>
+                    </button>
+                    <button id="btnHeroEnterTop" class="arcade-btn btn-accent hero-enter-btn">
+                        ⚔️ ENTER DOJO
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Sensei Kenji Proclamation Banner -->
+        <section class="hero-sensei-banner">
+            <div class="hero-sensei-avatar-frame">
+                <div class="avatar-ring-glow">
+                    <img src="assets/samurai.jpg" alt="Master Sensei Kenji" class="hero-sensei-photo" id="heroSenseiPhoto">
+                </div>
+                <div class="hero-sensei-tag">
+                    <span class="tag-crest">師範</span>
+                    <span class="tag-name">MASTER KENJI</span>
+                    <span class="tag-title">GRAND RECURSION SENSEI</span>
+                </div>
+            </div>
+
+            <div class="hero-sensei-dialogue-box">
+                <div class="dialogue-parchment-header">
+                    <div class="parchment-title-wrap">
+                        <span class="parchment-icon">📜</span>
+                        <span class="parchment-title">MASTER KENJI'S SCROLL OF ANCIENT WISDOM</span>
+                    </div>
+                    <span class="parchment-live-badge">SENSEI EXPLAINING</span>
+                </div>
+                <div class="dialogue-parchment-body">
+                    <p id="heroSpeechParagraph" class="hero-speech-paragraph">
+                        "Halt, traveler of the mind! You stand before the ancient gates of the <strong>Tower of Hanoi Dojo</strong>. Here, raw muscle and haste will leave you defeated—only the razor-sharp edge of <strong>recursive divide-and-conquer</strong> can untangle this sacred puzzle.
+                        <br><br>
+                        Step forward into my scroll! Learn the cosmic origins of Lord Brahma's diamond needles, etch the <strong>Three Sacred Laws</strong> into your soul, and grasp why moving <em>N</em> disks requires exactly <strong>2<sup>N</sup> &minus; 1</strong> honorable strikes. Study well, warrior, before you draw your blade in the dojo!"
+                    </p>
+                </div>
+                <div class="dialogue-quick-nav">
+                    <button class="hero-chapter-pill" data-target="heroLegend">⛩️ 1. What is Tower of Hanoi?</button>
+                    <button class="hero-chapter-pill" data-target="heroLaws">⚖️ 2. The 3 Sacred Laws</button>
+                    <button class="hero-chapter-pill" data-target="heroStrategy">⚡ 3. The Recursion Art &amp; 2<sup>N</sup> &minus; 1</button>
+                    <button class="hero-chapter-pill" data-target="heroMiniDemo">🥋 4. Live 3-Disk Demonstration</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- The 4 Pillars Knowledge Grid -->
+        <div class="hero-grid-container">
+            
+            <!-- PILLAR 1: WHAT IS TOWER OF HANOI (The Cosmic Legend & History) -->
+            <article class="hero-card-panel" id="heroLegend">
+                <div class="panel-header-banner">
+                    <div class="panel-pillar-badge">⛩️ PILLAR I</div>
+                    <div class="panel-heading-group">
+                        <h2 class="panel-title">WHAT IS TOWER OF HANOI?</h2>
+                        <span class="panel-subtitle">起源と伝説 &bull; THE COSMIC TEMPLE OF BENARES</span>
+                    </div>
+                </div>
+                <div class="panel-body-content">
+                    <p class="panel-lead-text">
+                        The <strong>Tower of Hanoi</strong> (also known as Lucas' Tower or the Tower of Brahma) is one of the most famous mathematical puzzles ever devised. It is a profound meditation on order, exponential growth, and algorithmic recursion.
+                    </p>
+
+                    <div class="ornate-legend-box">
+                        <div class="ornate-legend-title">💎 The 64 Golden Needles of Lord Brahma</div>
+                        <p>
+                            According to ancient Indian myth, beneath the golden dome of the temple of Kashi Vishwanath in holy <strong>Benares</strong> (Varanasi), there rests a brass plinth mounted with <strong>three diamond needles</strong>, each cubits high and slender as a wasp.
+                        </p>
+                        <p>
+                            At the dawn of the universe, Lord Brahma placed <strong>64 disks of pure beaten gold</strong> upon the first needle—the largest disk resting on the brass base, and each subsequent disk smaller than the one beneath it.
+                        </p>
+                        <p>
+                            A brotherhood of ascetic priests was sworn to transfer all 64 disks from the first needle to the third needle, moving one disk per day without ever violating the sacred laws of Brahma. The prophecy warns: <em>when the final golden disk is set upon the third needle, the temple will crumble into fine ash, and the entire universe will conclude its cycle!</em>
+                        </p>
+                    </div>
+
+                    <div class="cosmic-math-card">
+                        <div class="cosmic-card-top">
+                            <span class="cosmic-title">🌌 The Cosmic Timeline: Will the World End Today?</span>
+                            <span class="cosmic-badge">64 DISKS</span>
+                        </div>
+                        <div class="cosmic-formula-display">
+                            2<sup>64</sup> &minus; 1 = 18,446,744,073,709,551,615 moves
+                        </div>
+                        <p class="cosmic-explanation">
+                            Even if the priests move <strong>one disk every single second</strong> without taking a single breath or making an error, completing the 64 disks will take:
+                        </p>
+                        <div class="cosmic-years-pill">
+                            ⏳ 584,942,417,355 YEARS (584.9 BILLION YEARS!)
+                        </div>
+                        <p class="cosmic-footnote">
+                            Our entire universe is only <strong>13.8 billion years old</strong>. Thus, the monks will need over <strong>42 universe lifetimes</strong> to finish! Sensei Kenji smiles: <em>"Rest easy, young samurai—our dojo will stand for eternity!"</em>
+                        </p>
+                    </div>
+
+                    <div class="panel-history-footer">
+                        <span class="history-label">📜 Historical Origin:</span>
+                        <span class="history-desc">The puzzle was created in 1883 by French mathematician <strong>Édouard Lucas</strong> under the witty pen name <em>"N. Claus de Siam"</em> (an anagram of <em>Lucas d'Amiens</em>), mandarin of the college of Li-Sou-Stian.</span>
+                    </div>
+                </div>
+            </article>
+
+            <!-- PILLAR 2: THE THREE SACRED LAWS (Rules of Combat) -->
+            <article class="hero-card-panel" id="heroLaws">
+                <div class="panel-header-banner">
+                    <div class="panel-pillar-badge">⚖️ PILLAR II</div>
+                    <div class="panel-heading-group">
+                        <h2 class="panel-title">THE THREE SACRED LAWS</h2>
+                        <span class="panel-subtitle">三つの掟 &bull; THE UNBREAKABLE RULES OF COMBAT</span>
+                    </div>
+                </div>
+                <div class="panel-body-content">
+                    <p class="panel-lead-text">
+                        A warrior without discipline is merely a thug with a sword. In the Hanoi Dojo, victory only counts if every single move honors the <strong>Three Sacred Laws</strong>:
+                    </p>
+
+                    <div class="sacred-laws-grid">
+                        <!-- Law 1 -->
+                        <div class="sacred-law-card">
+                            <div class="law-crest-badge">LAW I</div>
+                            <h3 class="law-card-title">The Law of Singular Motion</h3>
+                            <span class="law-kanji">単一の動き</span>
+                            <p class="law-description">
+                                A samurai attacks with one focused strike. You may move strictly <strong>ONE disk at a time</strong> between pegs. Moving two or more disks together is impossible.
+                            </p>
+                        </div>
+
+                        <!-- Law 2 -->
+                        <div class="sacred-law-card">
+                            <div class="law-crest-badge">LAW II</div>
+                            <h3 class="law-card-title">The Law of the Summit</h3>
+                            <span class="law-kanji">頂の掟</span>
+                            <p class="law-description">
+                                You may only draw the <strong>uppermost, uncovered disk</strong> from any stack. You cannot slide or extract disks trapped in the middle or bottom of a tower.
+                            </p>
+                        </div>
+
+                        <!-- Law 3 -->
+                        <div class="sacred-law-card law-card-critical">
+                            <div class="law-crest-badge badge-crimson">LAW III</div>
+                            <h3 class="law-card-title">The Law of the Shogun's Armor</h3>
+                            <span class="law-kanji">主従の掟</span>
+                            <p class="law-description">
+                                <strong>NO LARGER DISK MAY EVER REST ATOP A SMALLER DISK!</strong> Every disk placed upon a peg must be smaller than the disk underneath it.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Interactive Law Comparator Station -->
+                    <div class="interactive-law-station">
+                        <div class="station-header">
+                            <span class="station-title">⚔️ INTERACTIVE LAW COMPARATOR & VALIDATOR</span>
+                            <span class="station-hint">Click the buttons to see how the Dojo validates your honor!</span>
+                        </div>
+                        <div class="comparator-cards-container">
+                            <!-- Valid Case -->
+                            <div class="rule-case-card rule-valid" id="cardValidMove">
+                                <div class="case-badge valid-badge">✅ HONORABLE STRIKE</div>
+                                <div class="case-peg-visualization">
+                                    <div class="case-pole"></div>
+                                    <div class="case-disk disk-sm">DISK 1 (Small)</div>
+                                    <div class="case-disk disk-lg">DISK 3 (Large)</div>
+                                    <div class="case-base"></div>
+                                </div>
+                                <p class="case-verdict">
+                                    <strong>Small atop Large:</strong> Natural hierarchy is preserved. The Shogun's armor safely carries the lighter blade.
+                                </p>
+                                <button id="btnTestValid" class="arcade-btn btn-sm btn-accent">
+                                    TEST HONORABLE MOVE
+                                </button>
+                            </div>
+
+                            <!-- Forbidden Case -->
+                            <div class="rule-case-card rule-invalid" id="cardInvalidMove">
+                                <div class="case-badge invalid-badge">❌ FORBIDDEN STRIKE</div>
+                                <div class="case-peg-visualization">
+                                    <div class="case-pole"></div>
+                                    <div class="case-disk disk-lg danger-shake">DISK 3 (Large)</div>
+                                    <div class="case-disk disk-sm">DISK 1 (Small)</div>
+                                    <div class="case-base"></div>
+                                </div>
+                                <p class="case-verdict">
+                                    <strong>Large atop Small:</strong> Forbidden! The heavy armor crushes the small blade beneath it. Results in buzzer and move rejection!
+                                </p>
+                                <button id="btnTestInvalid" class="arcade-btn btn-sm btn-danger">
+                                    TEST FORBIDDEN MOVE
+                                </button>
+                            </div>
+                        </div>
+                        <div id="lawFeedbackText" class="law-feedback-toast">
+                            Sensei says: "Click a test button above to hear the blade sing or buzzer sound!"
+                        </div>
+                    </div>
+                </div>
+            </article>
+
+            <!-- PILLAR 3: THE RECURSION ART & 2^N - 1 (Divide and Conquer Strategy) -->
+            <article class="hero-card-panel" id="heroStrategy">
+                <div class="panel-header-banner">
+                    <div class="panel-pillar-badge">⚡ PILLAR III</div>
+                    <div class="panel-heading-group">
+                        <h2 class="panel-title">THE ART OF RECURSION &amp; 2<sup>N</sup> &minus; 1</h2>
+                        <span class="panel-subtitle">再帰の極意 &bull; DIVIDE, CONQUER AND EXPONENTIAL GROWTH</span>
+                    </div>
+                </div>
+                <div class="panel-body-content">
+                    <p class="panel-lead-text">
+                        How does a samurai conquer an intimidating mountain of <em>N</em> disks without guessing? By mastering <strong>Recursion</strong>—the mathematical discipline of solving a grand challenge by breaking it into identical smaller sub-battles!
+                    </p>
+
+                    <div class="samurai-kata-stages">
+                        <div class="kata-stage-box">
+                            <div class="kata-badge">KATA 1</div>
+                            <div class="kata-title">Clear the Mountain Path</div>
+                            <div class="kata-formula">T(N &minus; 1) moves</div>
+                            <p class="kata-desc">
+                                To free the largest base disk <em>N</em>, you must first recursively move the top <strong>(N &minus; 1) disks</strong> from <strong>Tower A (Origin)</strong> to <strong>Tower B (Auxiliary)</strong>, using Tower C as temporary rest.
+                            </p>
+                        </div>
+                        <div class="kata-stage-box kata-main">
+                            <div class="kata-badge badge-gold">KATA 2</div>
+                            <div class="kata-title">The Shogun's Strike</div>
+                            <div class="kata-formula">Exactly 1 move</div>
+                            <p class="kata-desc">
+                                With the path completely cleared, move the single largest base disk <strong>Disk <em>N</em></strong> directly from <strong>Tower A (Origin)</strong> to <strong>Tower C (Target)</strong>!
+                            </p>
+                        </div>
+                        <div class="kata-stage-box">
+                            <div class="kata-badge">KATA 3</div>
+                            <div class="kata-title">Reunite the Tower</div>
+                            <div class="kata-formula">T(N &minus; 1) moves</div>
+                            <p class="kata-desc">
+                                Now recursively move the <strong>(N &minus; 1) disks</strong> from <strong>Tower B (Auxiliary)</strong> onto <strong>Tower C (Target)</strong> right on top of disk <em>N</em>. Victory is achieved!
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Mathematical Derivation -->
+                    <div class="recursion-math-breakdown">
+                        <div class="math-banner-header">
+                            <span class="banner-tag">⚔️ MATHEMATICAL PROOF OF 2<sup>N</sup> &minus; 1</span>
+                        </div>
+                        <p class="proof-explanation">
+                            Summing the 3 katas reveals the recurrence formula for minimum moves <em>T(N)</em>:
+                        </p>
+                        <div class="formula-highlight-strip">
+                            T(N) = T(N &minus; 1) + 1 + T(N &minus; 1) = 2 &times; T(N &minus; 1) + 1
+                        </div>
+                        <div class="expansion-table">
+                            <div class="expansion-row">
+                                <span class="exp-disks">N = 1</span>
+                                <span class="exp-math">T(1) = 1 = 2<sup>1</sup> &minus; 1</span>
+                                <span class="exp-result">1 move</span>
+                            </div>
+                            <div class="expansion-row">
+                                <span class="exp-disks">N = 2</span>
+                                <span class="exp-math">T(2) = 2(1) + 1 = 3 = 2<sup>2</sup> &minus; 1</span>
+                                <span class="exp-result">3 moves</span>
+                            </div>
+                            <div class="expansion-row">
+                                <span class="exp-disks">N = 3</span>
+                                <span class="exp-math">T(3) = 2(3) + 1 = 7 = 2<sup>3</sup> &minus; 1</span>
+                                <span class="exp-result">7 moves</span>
+                            </div>
+                            <div class="expansion-row">
+                                <span class="exp-disks">N = 4</span>
+                                <span class="exp-math">T(4) = 2(7) + 1 = 15 = 2<sup>4</sup> &minus; 1</span>
+                                <span class="exp-result">15 moves</span>
+                            </div>
+                        </div>
+                        <p class="growth-takeaway">
+                            Every single disk added <strong>doubles the moves plus one</strong>. That is why recursion in Hanoi grows exponentially (<em>O(2<sup>N</sup>)</em>)!
+                        </p>
+                    </div>
+
+                    <!-- Interactive Disk Calculator Slider -->
+                    <div class="interactive-calc-station">
+                        <div class="calc-header-bar">
+                            <label for="heroDiskRange" class="calc-label">⚡ TEST EXPONENTIAL GROWTH WITH SLIDER:</label>
+                            <span id="heroDiskCountDisplay" class="calc-value-pill">4 DISKS</span>
+                        </div>
+                        <input type="range" id="heroDiskRange" min="1" max="8" value="4" class="arcade-slider">
+                        
+                        <div class="calc-outputs-row">
+                            <div class="calc-metric-box">
+                                <span class="metric-label">OPTIMAL MOVES ($2^N - 1$)</span>
+                                <span id="heroMinMovesOutput" class="metric-value">15</span>
+                            </div>
+                            <div class="calc-metric-box">
+                                <span class="metric-label">SAMURAI RANK</span>
+                                <span id="heroRankOutput" class="metric-value">WARRIOR DISCIPLE</span>
+                            </div>
+                            <div class="calc-metric-box">
+                                <span class="metric-label">ESTIMATED TIME</span>
+                                <span id="heroEstTimeOutput" class="metric-value">~15 SECS</span>
+                            </div>
+                        </div>
+
+                        <!-- Live Visual Tower Preview for Slider -->
+                        <div class="slider-tower-preview">
+                            <span class="preview-title">LIVE TOWER STACK PREVIEW:</span>
+                            <div class="preview-stack-box" id="heroStackPreview">
+                                <!-- Injected dynamically by JS -->
+                            </div>
+                        </div>
+
+                        <button id="btnLaunchWithSelectedDisks" class="arcade-btn btn-accent launch-btn">
+                            🥋 PLAY IN DOJO WITH <span id="heroLaunchCountText">4</span> DISKS
+                        </button>
+                    </div>
+                </div>
+            </article>
+
+            <!-- PILLAR 4: LIVE INTERACTIVE MINI-DOJO (3-Disk Visualizer) -->
+            <article class="hero-card-panel" id="heroMiniDemo">
+                <div class="panel-header-banner">
+                    <div class="panel-pillar-badge">🎯 PILLAR IV</div>
+                    <div class="panel-heading-group">
+                        <h2 class="panel-title">THE MASTER'S LIVE MINI-DOJO</h2>
+                        <span class="panel-subtitle">実演と稽古 &bull; STEP-BY-STEP RECURSIVE VISUALIZER (3 DISKS)</span>
+                    </div>
+                </div>
+                <div class="panel-body-content">
+                    <p class="panel-lead-text">
+                        Behold the classic 3-disk trial solved step-by-step in exactly <strong>$2^3 - 1 = 7$ optimal moves</strong>. Watch Master Kenji narrate each strike, or step through move-by-move:
+                    </p>
+
+                    <!-- Mini Live Stage -->
+                    <div class="mini-dojo-stage">
+                        
+                        <!-- Sensei Step Commentary Box -->
+                        <div class="mini-sensei-box">
+                            <div class="mini-sensei-avatar">
+                                <img src="assets/samurai.jpg" alt="Kenji" class="mini-avatar-img">
+                                <span class="mini-avatar-name">KENJI</span>
+                            </div>
+                            <div class="mini-dialogue-content">
+                                <div class="mini-dialogue-top">
+                                    <span class="mini-step-badge" id="miniStepBadge">STEP 0 / 7</span>
+                                    <span class="mini-kata-status" id="miniKataStatus">STANDBY</span>
+                                </div>
+                                <p id="miniCommentarySpeech" class="mini-speech-text">
+                                    "Ready to observe the sacred 7 moves of the 3-disk trial. Click 'NEXT STEP' or 'AUTO SOLVE' to watch recursion unfold!"
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- 3 Mini Pegs Container -->
+                        <div class="mini-pegs-container" id="miniPegsContainer">
+                            <!-- Peg 0 -->
+                            <div class="mini-peg-col" data-minipeg="0" id="miniPeg-0">
+                                <div class="mini-peg-label">ORIGIN (A)</div>
+                                <div class="mini-peg-rod"></div>
+                                <div class="mini-peg-bottom"></div>
+                                <div class="mini-disks-container" id="miniStack-0"></div>
+                            </div>
+                            <!-- Peg 1 -->
+                            <div class="mini-peg-col" data-minipeg="1" id="miniPeg-1">
+                                <div class="mini-peg-label">AUXILIARY (B)</div>
+                                <div class="mini-peg-rod"></div>
+                                <div class="mini-peg-bottom"></div>
+                                <div class="mini-disks-container" id="miniStack-1"></div>
+                            </div>
+                            <!-- Peg 2 -->
+                            <div class="mini-peg-col" data-minipeg="2" id="miniPeg-2">
+                                <div class="mini-peg-label">TARGET (C)</div>
+                                <div class="mini-peg-rod"></div>
+                                <div class="mini-peg-bottom"></div>
+                                <div class="mini-disks-container" id="miniStack-2"></div>
+                            </div>
+                        </div>
+
+                        <!-- Mini Demo Control Buttons -->
+                        <div class="mini-controls-toolbar">
+                            <button id="btnMiniPrev" class="arcade-btn" disabled>⏮️ PREV STEP</button>
+                            <button id="btnMiniAuto" class="arcade-btn btn-accent">▶️ AUTO SOLVE DEMO</button>
+                            <button id="btnMiniNext" class="arcade-btn btn-warning">⏭️ NEXT STEP</button>
+                            <button id="btnMiniReset" class="arcade-btn btn-danger">↺ RESET DEMO</button>
+                        </div>
+                    </div>
+                </div>
+            </article>
+
+        </div>
+
+        <!-- Grand Call to Action Banner -->
+        <section class="hero-grand-cta">
+            <div class="grand-cta-content">
+                <div class="cta-kanji-crest">⛩️ 武士道 ⛩️</div>
+                <h2 class="grand-cta-title">YOUR INTELLECT IS SHARPENED. ENTER THE SAMURAI DOJO!</h2>
+                <p class="grand-cta-subtitle">
+                    Step into the combat arena. Choose 3 to 8 disks, race the clock in Timed Mode, or challenge Master Kenji's Native C Recursion Engine.
+                </p>
+                <div class="grand-cta-actions">
+                    <button id="btnHeroEnterMain" class="hero-cta-grand-btn">
+                        <span class="cta-sword-icon">⚔️</span>
+                        <span class="cta-main-text">ENTER THE DOJO &bull; BEGIN TRIAL</span>
+                    </button>
+                    <button id="btnHeroQuick3" class="arcade-btn btn-warning cta-sub-btn">
+                        🥋 QUICK ZEN MODE (3 DISKS)
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Hero Footer -->
+        <footer class="hero-footer-bar">
+            <span>⛩️ SAMURAI HANOI DOJO &bull; HIGH-PERFORMANCE NATIVE C ENGINE &bull; 4 EDO THEMES</span>
+        </footer>
+
+    </div>
+
+    <!-- ============================================== -->
+    <!-- MAIN ARCADE CRT SCREEN CONTAINER (GAME DOJO)   -->
+    <!-- ============================================== -->
+    <div class="arcade-wrapper crt-effect hidden" id="arcadeWrapper">
+        
+        <!-- Header & Top Navigation Bar -->
+        <header class="game-header">
+            <div class="brand">
+                <div class="brand-top-row">
+                    <span class="jp-title">ハノイの塔</span>
+                    <button id="btnCBackend" class="c-backend-pill" title="Click to view Native C Backend status & architecture">
+                        <span class="status-pulse-dot" id="cBackendDot"></span>
+                        <span id="cBackendText">NATIVE C: CHECKING...</span>
+                    </button>
+                </div>
+                <h1 class="game-title"><span class="highlight">SAMURAI</span> HANOI DOJO</h1>
+            </div>
+            <div class="header-controls">
+                <button id="btnBackToHero" class="arcade-btn btn-warning" title="Return to Hero Page & Sensei Explanation">
+                    ⛩️ HERO / LORE
+                </button>
+                <button id="btnMusic" class="arcade-btn icon-btn" title="Toggle Background Music (YouTube BGM)">
+                    <span class="icon" id="musicIcon">🎵</span>
+                    <span id="musicText" class="btn-label">BGM: OFF</span>
+                </button>
+                <button id="btnSound" class="arcade-btn icon-btn" title="Toggle Sound SFX">
+                    <span class="icon" id="soundIcon">🔊</span>
+                </button>
+                <button id="btnCRT" class="arcade-btn icon-btn" title="Toggle CRT Filter">
+                    <span class="icon">📺</span>
+                </button>
+                <button id="btnTheme" class="arcade-btn icon-btn" title="Switch Theme">
+                    <span class="icon">🎨</span>
+                </button>
+                <button id="btnScores" class="arcade-btn" title="High Scores">
+                    🏆 SCORES
+                </button>
+                <button id="btnHelp" class="arcade-btn" title="Recursion Sensei">
+                    📜 RECURSION
+                </button>
+            </div>
+        </header>
+
+        <!-- Main Mini Menu / Control Bar -->
+        <section class="control-panel">
+            <!-- Mode Selection -->
+            <div class="control-group">
+                <label for="modeSelect">MODE:</label>
+                <select id="modeSelect" class="arcade-select">
+                    <option value="normal">⛩️ Zen Normal Mode</option>
+                    <option value="timed">⏱️ Timed Challenge (60s)</option>
+                    <option value="tutorial">🎓 Sensei Tutorial</option>
+                </select>
+            </div>
+
+            <!-- Disk Count Selector -->
+            <div class="control-group">
+                <label for="diskCount">DISKS:</label>
+                <div class="disk-stepper">
+                    <button id="btnLessDisks" class="arcade-btn step-btn">-</button>
+                    <span id="diskCountVal" class="stepper-val">4</span>
+                    <button id="btnMoreDisks" class="arcade-btn step-btn">+</button>
+                </div>
+            </div>
+
+            <!-- Action Controls -->
+            <div class="action-buttons">
+                <button id="btnReset" class="arcade-btn btn-danger">↺ RESET</button>
+                <button id="btnUndo" class="arcade-btn btn-warning" disabled>↶ UNDO</button>
+                <button id="btnAutoSolve" class="arcade-btn btn-accent">⚡ AUTO SOLVE</button>
+            </div>
+        </section>
+
+        <!-- Dynamic Game Stats Bar -->
+        <section class="stats-bar">
+            <div class="stat-box">
+                <span class="stat-label">MOVES</span>
+                <span class="stat-value" id="moveCount">0</span>
+            </div>
+            <div class="stat-box">
+                <span class="stat-label">OPTIMAL MOVES</span>
+                <span class="stat-value" id="minMoves">15</span>
+            </div>
+            <div class="stat-box">
+                <span class="stat-label">TIME</span>
+                <span class="stat-value" id="timer">00:00</span>
+            </div>
+            <div class="stat-box">
+                <span class="stat-label">BEST TIME</span>
+                <span class="stat-value" id="bestTime">--:--</span>
+            </div>
+        </section>
+
+        <!-- Main Workspace: Towers + Samurai Sensei Dialogue -->
+        <main class="game-container">
+            
+            <!-- Hanoi Towers Arena -->
+            <section class="towers-container" id="towersContainer">
+                <!-- Tower 1 -->
+                <div class="tower-wrapper" data-tower="0" id="tower-0">
+                    <div class="tower-label">ORIGIN (A)</div>
+                    <div class="peg-pole"></div>
+                    <div class="peg-base"></div>
+                    <div class="disks-stack" id="stack-0"></div>
+                </div>
+
+                <!-- Tower 2 -->
+                <div class="tower-wrapper" data-tower="1" id="tower-1">
+                    <div class="tower-label">AUXILIARY (B)</div>
+                    <div class="peg-pole"></div>
+                    <div class="peg-base"></div>
+                    <div class="disks-stack" id="stack-1"></div>
+                </div>
+
+                <!-- Tower 3 -->
+                <div class="tower-wrapper" data-tower="2" id="tower-2">
+                    <div class="tower-label">TARGET (C)</div>
+                    <div class="peg-pole"></div>
+                    <div class="peg-base"></div>
+                    <div class="disks-stack" id="stack-2"></div>
+                </div>
+            </section>
+
+            <!-- Samurai Sensei Dialogue Box (Side Panel) -->
+            <aside class="sensei-sidebar" id="senseiSidebar">
+                <div class="sensei-card">
+                    <div class="sensei-avatar-frame">
+                        <img src="assets/samurai.jpg" alt="Samurai Sensei" class="sensei-img" id="senseiImg">
+                        <div class="sensei-badge">SENSEI KENJI</div>
+                    </div>
+                    <div class="speech-bubble">
+                        <div class="speech-header">
+                            <span class="speech-title">RECURSION MASTER SAY:</span>
+                            <button id="btnMuteSpeech" class="mini-icon-btn" title="Mute Speech SFX">🔊</button>
+                        </div>
+                        <p id="senseiText" class="speech-text">
+                            Greetings, warrior! I am Master Kenji. Your task is to move the entire stack of disks from Tower A to Tower C. Remember: Never place a larger disk on a smaller disk!
+                        </p>
+                        <div class="sensei-quick-actions">
+                            <button id="btnAskRecursion" class="sensei-chip">What is Recursion?</button>
+                            <button id="btnAskHint" class="sensei-chip">Give Me a Hint</button>
+                            <button id="btnSidebarHeroLore" class="sensei-chip">📜 Sensei Lore</button>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+        </main>
+
+        <!-- Auto Solver Speed Controller Bar (Appears when solving) -->
+        <div class="solver-bar hidden" id="solverBar">
+            <span class="solver-status">🤖 SENSEI RECURSION AUTO-SOLVER IN PROGRESS...</span>
+            <div class="solver-controls">
+                <label for="speedSlider">SPEED:</label>
+                <input type="range" id="speedSlider" min="100" max="1000" step="50" value="400">
+                <button id="btnPauseSolve" class="arcade-btn btn-warning">⏸️ PAUSE</button>
+                <button id="btnStopSolve" class="arcade-btn btn-danger">⏹️ STOP</button>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- MODAL: High Scores & Leaderboard -->
+    <div class="modal-overlay hidden" id="scoresModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>🏆 RECURSION HALL OF FAME</h2>
+                <button class="modal-close" id="closeScoresModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="scores-table-container">
+                    <table class="scores-table">
+                        <thead>
+                            <tr>
+                                <th>Disks</th>
+                                <th>Mode</th>
+                                <th>Best Time</th>
+                                <th>Fewest Moves</th>
+                                <th>Date</th>
+                            </tr>
+                        </thead>
+                        <tbody id="scoresTbody">
+                            <!-- Dynamic Content -->
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-actions">
+                    <button id="btnClearScores" class="arcade-btn btn-danger">CLEAR ALL RECORDS</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL: Samurai Recursion Dojo Lesson & Formula Visualizer -->
+    <div class="modal-overlay hidden" id="recursionModal">
+        <div class="modal-content lesson-modal">
+            <div class="modal-header">
+                <h2>📜 THE SAMURAI GUIDE TO RECURSION</h2>
+                <button class="modal-close" id="closeRecursionModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="lesson-grid">
+                    <div class="lesson-card">
+                        <h3>1. The Core Principle of Recursion</h3>
+                        <p>Recursion is solving a problem by breaking it down into smaller instances of <strong>the exact same problem</strong> until reaching a simple base case.</p>
+                        <div class="code-box">
+                            <code>
+                            Hanoi(N, Source, Target, Auxiliary):<br>
+                            &nbsp;&nbsp;If N == 1:<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;Move Disk 1 from Source → Target &nbsp;<span class="comment">// Base Case</span><br>
+                            &nbsp;&nbsp;Else:<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;Hanoi(N-1, Source, Auxiliary, Target) &nbsp;<span class="comment">// Step 1</span><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;Move Disk N from Source → Target &nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">// Step 2</span><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;Hanoi(N-1, Auxiliary, Target, Source) &nbsp;<span class="comment">// Step 3</span>
+                            </code>
+                        </div>
+                    </div>
+                    <div class="lesson-card">
+                        <h3>2. Mathematical Proof: $2^n - 1$</h3>
+                        <p>To move $n$ disks:</p>
+                        <ul>
+                            <li>Move top $n-1$ disks out of the way: <strong>$T(n-1)$</strong> moves</li>
+                            <li>Move bottom disk $n$ to destination: <strong>1</strong> move</li>
+                            <li>Move top $n-1$ disks onto disk $n$: <strong>$T(n-1)$</strong> moves</li>
+                        </ul>
+                        <p class="math-highlight">
+                            $$T(n) = 2 \cdot T(n-1) + 1 = 2^n - 1$$
+                        </p>
+                        <table class="math-table">
+                            <tr><th>Disks ($N$)</th><th>Minimum Moves ($2^N - 1$)</th></tr>
+                            <tr><td>3 Disks</td><td>7 Moves</td></tr>
+                            <tr><td>4 Disks</td><td>15 Moves</td></tr>
+                            <tr><td>5 Disks</td><td>31 Moves</td></tr>
+                            <tr><td>6 Disks</td><td>63 Moves</td></tr>
+                            <tr><td>7 Disks</td><td>127 Moves</td></tr>
+                            <tr><td>8 Disks</td><td>255 Moves</td></tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL: Victory Screen -->
+    <div class="modal-overlay hidden" id="victoryModal">
+        <div class="modal-content victory-card">
+            <div class="victory-banner">🎉 STAGE CLEARED! 🎉</div>
+            <h2 id="victoryTitle">VICTORY OF THE SAMURAI!</h2>
+            <p id="victoryMsg" class="victory-desc">You masterfully solved the puzzle!</p>
+            
+            <div class="victory-stats">
+                <div class="v-stat">
+                    <span class="v-label">Total Moves</span>
+                    <span class="v-val" id="vMoves">0</span>
+                </div>
+                <div class="v-stat">
+                    <span class="v-label">Optimal Target</span>
+                    <span class="v-val" id="vMinMoves">15</span>
+                </div>
+                <div class="v-stat">
+                    <span class="v-label">Time Taken</span>
+                    <span class="v-val" id="vTime">00:15</span>
+                </div>
+                <div class="v-stat">
+                    <span class="v-label">Accuracy Rating</span>
+                    <span class="v-val" id="vGrade">⭐⭐⭐ PERFECT</span>
+                </div>
+            </div>
+
+            <div class="modal-actions">
+                <button id="btnPlayAgain" class="arcade-btn btn-accent">PLAY AGAIN</button>
+                <button id="btnNextLevel" class="arcade-btn btn-warning">NEXT DISK (+1)</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL: C Backend Status & Architecture -->
+    <div class="modal-overlay hidden" id="cBackendModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>⛩️ NATIVE C BACKEND RECURSION ENGINE</h2>
+                <button class="close-modal-btn" id="closeCBackendModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="lesson-section">
+                    <h3>⚡ Native C Backend Architecture</h3>
+                    <p>The core puzzle logic and recursion solver are built in <strong>pure C</strong> located in <code>c_backend/</code>:</p>
+                    <ul class="lesson-list">
+                        <li><strong>Recursion Algorithm:</strong> Classic $O(2^N - 1)$ divide-and-conquer in <code>hanoi.c</code> (<code>hanoi_solve_recursive</code>).</li>
+                        <li><strong>Rule Validator:</strong> Server-side move validation in C enforcing disk sizes and peg boundaries.</li>
+                        <li><strong>Optimal Next-Move Hints:</strong> Arbitrary state analyzer in C computing the shortest path to victory.</li>
+                        <li><strong>High-Speed C HTTP Server:</strong> Native WinSock2 / POSIX server in <code>server.c</code> listening on port 8080.</li>
+                    </ul>
+                </div>
+                <div class="lesson-section">
+                    <h3>🔌 Active REST API Endpoints (Port 8080)</h3>
+                    <table class="moves-table">
+                        <tr><th>Method & Route</th><th>Purpose in C Backend</th></tr>
+                        <tr><td><code>GET /api/health</code></td><td>Verify C engine health & version</td></tr>
+                        <tr><td><code>GET /api/solve?disks=N</code></td><td>Execute C recursive algorithm and return move list</td></tr>
+                        <tr><td><code>POST /api/move</code></td><td>Validate and execute disk move in C</td></tr>
+                        <tr><td><code>POST /api/hint</code></td><td>Analyze arbitrary board state & return next optimal move</td></tr>
+                        <tr><td><code>GET /api/metrics?disks=N</code></td><td>Calculate min moves ($2^N - 1$) & complexity analysis</td></tr>
+                    </table>
+                </div>
+                <div class="lesson-section">
+                    <h3>🚀 Server Status</h3>
+                    <p id="cBackendModalStatus">Status: Checking connection...</p>
+                </div>
+                <div class="modal-actions" style="margin-top: 15px;">
+                    <button id="btnTestCBackend" class="arcade-btn btn-accent">🔄 RE-TEST CONNECTION</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="audio.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

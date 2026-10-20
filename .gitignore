@@ -1,0 +1,19 @@
+# Bundled compiler toolchain
+w64devkit/
+c_backend/w64devkit/
+
+# Archives & compressed bundles
+*.zip
+*.tar.gz
+*.7z
+
+# Build artifacts
+*.o
+*.obj
+
+# OS & IDE metadata
+.vscode/
+.idea/
+Thumbs.db
+Desktop.ini
+.DS_Store
